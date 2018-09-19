@@ -27,32 +27,23 @@ class DomainmodelGenerator extends AbstractGenerator {
             package «e.eContainer.fullyQualifiedName»;
         «ENDIF»
         
-        public class «e.name» «IF e.superType !== null»extends «e.superType.fullyQualifiedName» «ENDIF»{                               
-        
-        private ArrayList<Row> rows = new ArrayList<Row>();                  
-                            
-                            «FOR f : e.features»
-                                «f.compile»
-                            «ENDFOR»
-         }        
+        public class «e.name» «IF e.superType !== null
+                »extends «e.superType.fullyQualifiedName» «ENDIF»{
+            «FOR f : e.features»
+                «f.compile»
+            «ENDFOR»
+        }
     '''
  
     def compile(Feature f) '''
+        private «f.type.fullyQualifiedName» «f.name»;
         
-        Row «f.name» = new Row(«f.name»,«f.type.fullyQualifiedName»); 
-        rows.add(«f.name»);
+        public «f.type.fullyQualifiedName» get«f.name.toFirstUpper»() {
+            return «f.name»;
+        }
+        
+        public void set«f.name.toFirstUpper»(«f.type.fullyQualifiedName» «f.name») {
+            this.«f.name» = «f.name»;
+        }
     '''
 }
-
-/* 
-  CREATE SEQUENCE contacts_seq
-  START WITH 1
-  INCREMENT BY 1;
-  
- */
- 
- /*
-  DROP TABLE IF EXISTS 
-   */
-   
-   

@@ -13,6 +13,7 @@ import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
+import org.eclipse.xtext.xbase.lib.StringExtensions;
 import org.example.domainmodel.domainmodel.Entity;
 import org.example.domainmodel.domainmodel.Feature;
 
@@ -61,47 +62,72 @@ public class DomainmodelGenerator extends AbstractGenerator {
         _builder.append(" ");
       }
     }
-    _builder.append("{                               ");
+    _builder.append("{");
     _builder.newLineIfNotEmpty();
-    _builder.newLine();
-    _builder.append("private ArrayList<Row> rows = new ArrayList<Row>();                  ");
-    _builder.newLine();
-    _builder.append("                    ");
-    _builder.newLine();
     {
       EList<Feature> _features = e.getFeatures();
       for(final Feature f : _features) {
-        _builder.append("                    ");
+        _builder.append("    ");
         CharSequence _compile = this.compile(f);
-        _builder.append(_compile, "                    ");
+        _builder.append(_compile, "    ");
         _builder.newLineIfNotEmpty();
       }
     }
-    _builder.append(" ");
-    _builder.append("}        ");
+    _builder.append("}");
     _builder.newLine();
     return _builder;
   }
   
   public CharSequence compile(final Feature f) {
     StringConcatenation _builder = new StringConcatenation();
-    _builder.newLine();
-    _builder.append("Row ");
-    String _name = f.getName();
-    _builder.append(_name);
-    _builder.append(" = new Row(");
-    String _name_1 = f.getName();
-    _builder.append(_name_1);
-    _builder.append(",");
+    _builder.append("private ");
     QualifiedName _fullyQualifiedName = this._iQualifiedNameProvider.getFullyQualifiedName(f.getType());
     _builder.append(_fullyQualifiedName);
-    _builder.append("); ");
+    _builder.append(" ");
+    String _name = f.getName();
+    _builder.append(_name);
+    _builder.append(";");
     _builder.newLineIfNotEmpty();
-    _builder.append("rows.add(");
+    _builder.newLine();
+    _builder.append("public ");
+    QualifiedName _fullyQualifiedName_1 = this._iQualifiedNameProvider.getFullyQualifiedName(f.getType());
+    _builder.append(_fullyQualifiedName_1);
+    _builder.append(" get");
+    String _firstUpper = StringExtensions.toFirstUpper(f.getName());
+    _builder.append(_firstUpper);
+    _builder.append("() {");
+    _builder.newLineIfNotEmpty();
+    _builder.append("    ");
+    _builder.append("return ");
+    String _name_1 = f.getName();
+    _builder.append(_name_1, "    ");
+    _builder.append(";");
+    _builder.newLineIfNotEmpty();
+    _builder.append("}");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("public void set");
+    String _firstUpper_1 = StringExtensions.toFirstUpper(f.getName());
+    _builder.append(_firstUpper_1);
+    _builder.append("(");
+    QualifiedName _fullyQualifiedName_2 = this._iQualifiedNameProvider.getFullyQualifiedName(f.getType());
+    _builder.append(_fullyQualifiedName_2);
+    _builder.append(" ");
     String _name_2 = f.getName();
     _builder.append(_name_2);
-    _builder.append(");");
+    _builder.append(") {");
     _builder.newLineIfNotEmpty();
+    _builder.append("    ");
+    _builder.append("this.");
+    String _name_3 = f.getName();
+    _builder.append(_name_3, "    ");
+    _builder.append(" = ");
+    String _name_4 = f.getName();
+    _builder.append(_name_4, "    ");
+    _builder.append(";");
+    _builder.newLineIfNotEmpty();
+    _builder.append("}");
+    _builder.newLine();
     return _builder;
   }
 }
