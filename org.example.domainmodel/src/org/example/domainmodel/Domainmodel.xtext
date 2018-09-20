@@ -32,11 +32,13 @@ DataType:
 Entity:
     'entity' name=ID ('extends' superType=[Entity|QualifiedName])? '{'
         (features+=Feature)*
-    '}';
+        
+     '}';
  
 Feature:
     (many?='many')? name=ID ':' type=[Type|QualifiedName];
     
 
+
  	
- 	   
+ 	        
