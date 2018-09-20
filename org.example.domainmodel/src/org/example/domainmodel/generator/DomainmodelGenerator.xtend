@@ -39,10 +39,12 @@ class DomainmodelGenerator extends AbstractGenerator {
 				DBGen db = new DBGen();
 			}
 		}
-		«for (e : resource.allContents.toIterable.filter(Entity)){
-			e.compile
-		}»
+		«FOR e : resource.allContents.toIterable.filter(Entity)»
+			«compile(e)»
+		«ENDFOR»
 	'''
+		
+		
 	
  	
  	def DBGen() '''
@@ -67,16 +69,13 @@ class DomainmodelGenerator extends AbstractGenerator {
  				
  			}
  			
- 			«for f : resource.allContents.toIterable.filter(Entity)»
- 			   public void set«f.name.toFirstUpper»(«f.type.fullyQualifiedName» «f.name») {
- 			   	this.«f.name» = «f.name»;
- 			   }
  			
+ 			
+ 		
  		}
  		
  	'''
- 	
- 	
+ 	 	
     def compile(Entity e) ''' 
         
         Statment stmt = new Statment();
@@ -87,11 +86,7 @@ class DomainmodelGenerator extends AbstractGenerator {
     '''
  
     def compile(Feature f) '''
-        private «f.type.fullyQualifiedName» «f.name»;
         
-        public «f.type.fullyQualifiedName» get«f.name.toFirstUpper»() {
-            return «f.name»;
-        }
         
         public void set«f.name.toFirstUpper»(«f.type.fullyQualifiedName» «f.name») {
             this.«f.name» = «f.name»;

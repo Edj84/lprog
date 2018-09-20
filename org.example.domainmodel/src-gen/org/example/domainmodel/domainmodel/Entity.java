@@ -66,4 +66,6 @@ public interface Entity extends Type
    */
   EList<Feature> getFeatures();
 
+public abstract void compile();
+
 } // Entity
