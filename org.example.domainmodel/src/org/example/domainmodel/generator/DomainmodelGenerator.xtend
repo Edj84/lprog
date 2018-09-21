@@ -17,7 +17,8 @@ class DomainmodelGenerator extends AbstractGenerator {
     override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
         
         fsa.generateFile("DBGen.java", DBGen)
-        fsa.generateFile("Statment.java", Statment())
+        fsa.generateFile("Table.java", Table)
+        fsa.generateFile("Collumn.java", Collumn)
         fsa.generateFile("App.java", App(resource))
         
         
@@ -33,75 +34,61 @@ class DomainmodelGenerator extends AbstractGenerator {
     
  	def DBGen() '''
  		public class DBGen {
- 			private ArrayList<Statment> statments;
+ 			private ArrayList<Table> squema;
  			
  			public DBGen(){
- 				statments = new ArrayList<Statments>();
+ 				squema = new ArrayList<Table>();
  			}
  			
- 			public boolean addStmt(Statment stmt){
- 				return statments.add(stmt);
+ 			public boolean addTable(Table table){
+ 				return squema.add(table);
  			}
  	''' 
  	
- 	def Statment() '''
- 		
- 		public class Statment(){
- 			private String type, ID;
- 			private ArrayList<String> content;
- 			
- 			public Statment(String ID){
- 				this.ID = ID;
- 			}
- 			
- 			public void setType(String type){
- 			 	this.type = type;
- 			}
- 			
- 			public void addContent(String content){
- 			 	this.content.add(content);
- 			}
- 			
- 			public String getID(){
- 				return ID;
- 			}
- 			
- 			public String getType(){
- 			 	return type;
- 			}
- 			
- 			public ArrayList<String> getContent(){
- 				return content;
- 			}
- 			
- 			public String toString(){
- 				
- 				StringBuilder content = new StringBuilder();
- 				
- 				for(c : this.content)
- 					content.append(c + " ");
- 				
- 				return ID + "{ " 
- 				+ type + ", " 
- 				+ content;
- 			} 		
- 			
- 		}
- 		
- 	'''
- 	 	
+ 	def Table() '''
+		
+		public class Table{
+			private ArrayList<Collumn> collumns;
+
+			public Table(){
+
+			}
+
+			public boolean addCollumn(Collumn col){
+				return collumns.add(col);
+			}
+			
+	'''
+	
+	def Collumn()'''
+		public class Collumn{
+			private String name;
+			private String type;			
+		
+		public Collumn(){
+					
+		}
+
+		public void setName(String name){
+			this.name = name;
+		}
+
+		public void setType(String type){
+			
+			if(type.toUpperCase().equals("STRING"))			
+				name = "VARCHAR";
+				
+			this.name = name;
+		}
+
+	'''
+ 	 	 	
     def App(Resource resource) '''
 		public class App{
 			
 			public static void main(String[] args){
 				DBGen db = new DBGen();
-				Statment stmt;			
-			}
-			
-			public static void readStatment(Statment stmt){
-				stmt.
-			}
-		
+							
 		«FOR e : resource.allContents.toIterable.filter(Entity)»
 			«compile(e)»
 		«ENDFOR»
@@ -111,17 +98,18 @@ class DomainmodelGenerator extends AbstractGenerator {
     
     def compile(Entity e) ''' 
         
-        stmt = readStmt(«e.name»);
+        Table «e.name» = new Table();
         
+		«FOR f: e.features» 
+			«compile(f)»
+		«ENDFOR»
         
-        
-        
-        }
     '''
  
     def compile(Feature f) '''
         
-                
-        
+		Collumn col = new Collum();
+		col.setName(«f.name»);	
+        col.setType(«f.type»);        
     '''
 }

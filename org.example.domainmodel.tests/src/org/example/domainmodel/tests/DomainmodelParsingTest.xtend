@@ -24,8 +24,21 @@ class DomainmodelParsingTest {
 			datatype String
 			
 			entity Aluno{
-				nome : String	
+				nome : String
+				matricula: String				
+				curso: Curso	
 			}
+			
+			entity Curso{
+				nome: String
+				escola: Escola
+			}
+			
+			entity Universidade{
+				nome: String
+				
+			}
+			
 		''')
 		Assert.assertNotNull(result)
 		Assert.assertTrue(result.eResource.errors.isEmpty)

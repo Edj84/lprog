@@ -2,6 +2,7 @@ package org.example.domainmodel.generator;
 
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend2.lib.StringConcatenation;
@@ -13,6 +14,7 @@ import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 import org.example.domainmodel.domainmodel.Entity;
 import org.example.domainmodel.domainmodel.Feature;
+import org.example.domainmodel.domainmodel.Type;
 
 @SuppressWarnings("all")
 public class DomainmodelGenerator extends AbstractGenerator {
@@ -23,7 +25,8 @@ public class DomainmodelGenerator extends AbstractGenerator {
   @Override
   public void doGenerate(final Resource resource, final IFileSystemAccess2 fsa, final IGeneratorContext context) {
     fsa.generateFile("DBGen.java", this.DBGen());
-    fsa.generateFile("Statment.java", this.Statment());
+    fsa.generateFile("Table.java", this.Table());
+    fsa.generateFile("Collumn.java", this.Collumn());
     fsa.generateFile("App.java", this.App(resource));
   }
   
@@ -39,7 +42,7 @@ public class DomainmodelGenerator extends AbstractGenerator {
     _builder.append("public class DBGen {");
     _builder.newLine();
     _builder.append("\t");
-    _builder.append("private ArrayList<Statment> statments;");
+    _builder.append("private ArrayList<Table> squema;");
     _builder.newLine();
     _builder.append("\t");
     _builder.newLine();
@@ -47,7 +50,7 @@ public class DomainmodelGenerator extends AbstractGenerator {
     _builder.append("public DBGen(){");
     _builder.newLine();
     _builder.append("\t\t");
-    _builder.append("statments = new ArrayList<Statments>();");
+    _builder.append("squema = new ArrayList<Table>();");
     _builder.newLine();
     _builder.append("\t");
     _builder.append("}");
@@ -55,10 +58,10 @@ public class DomainmodelGenerator extends AbstractGenerator {
     _builder.append("\t");
     _builder.newLine();
     _builder.append("\t");
-    _builder.append("public boolean addStmt(Statment stmt){");
+    _builder.append("public boolean addTable(Table table){");
     _builder.newLine();
     _builder.append("\t\t");
-    _builder.append("return statments.add(stmt);");
+    _builder.append("return squema.add(table);");
     _builder.newLine();
     _builder.append("\t");
     _builder.append("}");
@@ -66,116 +69,77 @@ public class DomainmodelGenerator extends AbstractGenerator {
     return _builder;
   }
   
-  public CharSequence Statment() {
+  public CharSequence Table() {
     StringConcatenation _builder = new StringConcatenation();
     _builder.newLine();
-    _builder.append("public class Statment(){");
+    _builder.append("public class Table{");
     _builder.newLine();
     _builder.append("\t");
-    _builder.append("private String type, ID;");
+    _builder.append("private ArrayList<Collumn> collumns;");
+    _builder.newLine();
     _builder.newLine();
     _builder.append("\t");
-    _builder.append("private ArrayList<String> content;");
+    _builder.append("public Table(){");
+    _builder.newLine();
     _builder.newLine();
     _builder.append("\t");
+    _builder.append("}");
+    _builder.newLine();
     _builder.newLine();
     _builder.append("\t");
-    _builder.append("public Statment(String ID){");
+    _builder.append("public boolean addCollumn(Collumn col){");
     _builder.newLine();
     _builder.append("\t\t");
-    _builder.append("this.ID = ID;");
+    _builder.append("return collumns.add(col);");
     _builder.newLine();
     _builder.append("\t");
     _builder.append("}");
     _builder.newLine();
     _builder.append("\t");
     _builder.newLine();
-    _builder.append("\t");
-    _builder.append("public void setType(String type){");
-    _builder.newLine();
-    _builder.append("\t \t");
-    _builder.append("this.type = type;");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("}");
+    return _builder;
+  }
+  
+  public CharSequence Collumn() {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("public class Collumn{");
     _builder.newLine();
     _builder.append("\t");
+    _builder.append("private String name;");
     _builder.newLine();
     _builder.append("\t");
-    _builder.append("public void addContent(String content){");
+    _builder.append("private String type;\t\t\t");
     _builder.newLine();
-    _builder.append("\t \t");
-    _builder.append("this.content.add(content);");
     _builder.newLine();
-    _builder.append("\t");
-    _builder.append("}");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("public String getID(){");
-    _builder.newLine();
-    _builder.append("\t\t");
-    _builder.append("return ID;");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("}");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("public String getType(){");
-    _builder.newLine();
-    _builder.append("\t \t");
-    _builder.append("return type;");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("}");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("public ArrayList<String> getContent(){");
-    _builder.newLine();
-    _builder.append("\t\t");
-    _builder.append("return content;");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("}");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("public String toString(){");
-    _builder.newLine();
-    _builder.append("\t\t");
-    _builder.newLine();
-    _builder.append("\t\t");
-    _builder.append("StringBuilder content = new StringBuilder();");
-    _builder.newLine();
-    _builder.append("\t\t");
-    _builder.newLine();
-    _builder.append("\t\t");
-    _builder.append("for(c : this.content)");
+    _builder.append("public Collumn(){");
     _builder.newLine();
     _builder.append("\t\t\t");
-    _builder.append("content.append(c + \" \");");
     _builder.newLine();
-    _builder.append("\t\t");
+    _builder.append("}");
     _builder.newLine();
-    _builder.append("\t\t");
-    _builder.append("return ID + \"{ \" ");
     _builder.newLine();
-    _builder.append("\t\t");
-    _builder.append("+ type + \", \" ");
-    _builder.newLine();
-    _builder.append("\t\t");
-    _builder.append("+ content;");
+    _builder.append("public void setName(String name){");
     _builder.newLine();
     _builder.append("\t");
-    _builder.append("} \t\t");
+    _builder.append("this.name = name;");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("public void setType(String type){");
     _builder.newLine();
     _builder.append("\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("if(type.toUpperCase().equals(\"STRING\"))\t\t\t");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("name = \"VARCHAR\";");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("this.name = name;");
     _builder.newLine();
     _builder.append("}");
     _builder.newLine();
@@ -195,23 +159,7 @@ public class DomainmodelGenerator extends AbstractGenerator {
     _builder.append("\t\t");
     _builder.append("DBGen db = new DBGen();");
     _builder.newLine();
-    _builder.append("\t\t");
-    _builder.append("Statment stmt;\t\t\t");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("}");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("public static void readStatment(Statment stmt){");
-    _builder.newLine();
-    _builder.append("\t\t");
-    _builder.append("stmt.");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("}");
-    _builder.newLine();
+    _builder.append("\t\t\t\t\t");
     _builder.newLine();
     {
       Iterable<Entity> _filter = Iterables.<Entity>filter(IteratorExtensions.<EObject>toIterable(resource.getAllContents()), Entity.class);
@@ -230,16 +178,21 @@ public class DomainmodelGenerator extends AbstractGenerator {
   public CharSequence compile(final Entity e) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.newLine();
-    _builder.append("stmt = readStmt(");
+    _builder.append("Table ");
     String _name = e.getName();
     _builder.append(_name);
-    _builder.append(");");
+    _builder.append(" = new Table();");
     _builder.newLineIfNotEmpty();
     _builder.newLine();
-    _builder.newLine();
-    _builder.newLine();
-    _builder.newLine();
-    _builder.append("}");
+    {
+      EList<Feature> _features = e.getFeatures();
+      for(final Feature f : _features) {
+        _builder.append("\t\t");
+        CharSequence _compile = this.compile(f);
+        _builder.append(_compile, "\t\t");
+        _builder.newLineIfNotEmpty();
+      }
+    }
     _builder.newLine();
     return _builder;
   }
@@ -248,10 +201,19 @@ public class DomainmodelGenerator extends AbstractGenerator {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("        ");
     _builder.newLine();
-    _builder.append("                ");
+    _builder.append("Collumn col = new Collum();");
     _builder.newLine();
+    _builder.append("col.setName(");
+    String _name = f.getName();
+    _builder.append(_name);
+    _builder.append(");\t");
+    _builder.newLineIfNotEmpty();
     _builder.append("        ");
-    _builder.newLine();
+    _builder.append("col.setType(");
+    Type _type = f.getType();
+    _builder.append(_type, "        ");
+    _builder.append(");        ");
+    _builder.newLineIfNotEmpty();
     return _builder;
   }
 }
