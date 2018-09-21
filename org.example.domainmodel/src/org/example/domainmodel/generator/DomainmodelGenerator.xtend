@@ -113,9 +113,9 @@ class DomainmodelGenerator extends AbstractGenerator {
         
         stmt = readStmt(«e.name»);
         
-        «FOR f : e.features»
-        	«compile(f)»
-        «ENDFOR»
+        
+        
+        
         }
     '''
  

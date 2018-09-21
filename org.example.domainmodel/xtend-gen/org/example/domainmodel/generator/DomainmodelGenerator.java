@@ -2,7 +2,6 @@ package org.example.domainmodel.generator;
 
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend2.lib.StringConcatenation;
@@ -237,14 +236,9 @@ public class DomainmodelGenerator extends AbstractGenerator {
     _builder.append(");");
     _builder.newLineIfNotEmpty();
     _builder.newLine();
-    {
-      EList<Feature> _features = e.getFeatures();
-      for(final Feature f : _features) {
-        CharSequence _compile = this.compile(f);
-        _builder.append(_compile);
-        _builder.newLineIfNotEmpty();
-      }
-    }
+    _builder.newLine();
+    _builder.newLine();
+    _builder.newLine();
     _builder.append("}");
     _builder.newLine();
     return _builder;
