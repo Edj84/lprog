@@ -17,7 +17,7 @@ class DomainmodelGenerator extends AbstractGenerator {
     override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
         
         fsa.generateFile("DBGen.java", DBGen)
-        fsa.generateFile("Statment.java", Statment)
+        fsa.generateFile("Statment.java", Statment())
         fsa.generateFile("App.java", App(resource))
         
         
@@ -31,22 +31,6 @@ class DomainmodelGenerator extends AbstractGenerator {
         
         */
     
-		
-	def App(Resource resource) '''
-		public class App{
-			
-			public static void main(String[] args){
-				DBGen db = new DBGen();
-			}
-		}
-		«FOR e : resource.allContents.toIterable.filter(Entity)»
-			«compile(e)»
-		«ENDFOR»
-	'''
-		
-		
-	
- 	
  	def DBGen() '''
  		public class DBGen {
  			private ArrayList<Statment> statments;
@@ -60,36 +44,84 @@ class DomainmodelGenerator extends AbstractGenerator {
  			}
  	''' 
  	
- 	def Statment()'''
+ 	def Statment() '''
+ 		
  		public class Statment(){
- 			private String type, id;
+ 			private String type, ID;
  			private ArrayList<String> content;
  			
- 			public Statment(){
- 				
+ 			public Statment(String ID){
+ 				this.ID = ID;
  			}
  			
+ 			public void setType(String type){
+ 			 	this.type = type;
+ 			}
  			
+ 			public void addContent(String content){
+ 			 	this.content.add(content);
+ 			}
  			
- 		
+ 			public String getID(){
+ 				return ID;
+ 			}
+ 			
+ 			public String getType(){
+ 			 	return type;
+ 			}
+ 			
+ 			public ArrayList<String> getContent(){
+ 				return content;
+ 			}
+ 			
+ 			public String toString(){
+ 				
+ 				StringBuilder content = new StringBuilder();
+ 				
+ 				for(c : this.content)
+ 					content.append(c + " ");
+ 				
+ 				return ID + "{ " 
+ 				+ type + ", " 
+ 				+ content;
+ 			} 		
+ 			
  		}
  		
  	'''
  	 	
+    def App(Resource resource) '''
+		public class App{
+			
+			public static void main(String[] args){
+				DBGen db = new DBGen();
+				Statment stmt;			
+			}
+			
+			public static void readStatment(Statment stmt){
+				stmt.
+			}
+		
+		«FOR e : resource.allContents.toIterable.filter(Entity)»
+			«compile(e)»
+		«ENDFOR»
+		
+		}
+	'''
+    
     def compile(Entity e) ''' 
         
-        Statment stmt = new Statment();
-            «FOR f : e.features»
-                «f.compile»
-            «ENDFOR»
+        stmt = readStmt(«e.name»);
+        
+        «FOR f : e.features»
+        	«compile(f)»
+        «ENDFOR»
         }
     '''
  
     def compile(Feature f) '''
         
+                
         
-        public void set«f.name.toFirstUpper»(«f.type.fullyQualifiedName» «f.name») {
-            this.«f.name» = «f.name»;
-        }
     '''
 }

@@ -10,10 +10,8 @@ import org.eclipse.xtext.generator.AbstractGenerator;
 import org.eclipse.xtext.generator.IFileSystemAccess2;
 import org.eclipse.xtext.generator.IGeneratorContext;
 import org.eclipse.xtext.naming.IQualifiedNameProvider;
-import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
-import org.eclipse.xtext.xbase.lib.StringExtensions;
 import org.example.domainmodel.domainmodel.Entity;
 import org.example.domainmodel.domainmodel.Feature;
 
@@ -37,34 +35,6 @@ public class DomainmodelGenerator extends AbstractGenerator {
    * e.compile)
    * }
    */
-  public CharSequence App(final Resource resource) {
-    StringConcatenation _builder = new StringConcatenation();
-    _builder.append("public class App{");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("public static void main(String[] args){");
-    _builder.newLine();
-    _builder.append("\t\t");
-    _builder.append("DBGen db = new DBGen();");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("}");
-    _builder.newLine();
-    _builder.append("}");
-    _builder.newLine();
-    {
-      Iterable<Entity> _filter = Iterables.<Entity>filter(IteratorExtensions.<EObject>toIterable(resource.getAllContents()), Entity.class);
-      for(final Entity e : _filter) {
-        CharSequence _compile = this.compile(e);
-        _builder.append(_compile);
-        _builder.newLineIfNotEmpty();
-      }
-    }
-    return _builder;
-  }
-  
   public CharSequence DBGen() {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("public class DBGen {");
@@ -99,10 +69,11 @@ public class DomainmodelGenerator extends AbstractGenerator {
   
   public CharSequence Statment() {
     StringConcatenation _builder = new StringConcatenation();
+    _builder.newLine();
     _builder.append("public class Statment(){");
     _builder.newLine();
     _builder.append("\t");
-    _builder.append("private String type, id;");
+    _builder.append("private String type, ID;");
     _builder.newLine();
     _builder.append("\t");
     _builder.append("private ArrayList<String> content;");
@@ -110,9 +81,10 @@ public class DomainmodelGenerator extends AbstractGenerator {
     _builder.append("\t");
     _builder.newLine();
     _builder.append("\t");
-    _builder.append("public Statment(){");
+    _builder.append("public Statment(String ID){");
     _builder.newLine();
     _builder.append("\t\t");
+    _builder.append("this.ID = ID;");
     _builder.newLine();
     _builder.append("\t");
     _builder.append("}");
@@ -120,9 +92,91 @@ public class DomainmodelGenerator extends AbstractGenerator {
     _builder.append("\t");
     _builder.newLine();
     _builder.append("\t");
+    _builder.append("public void setType(String type){");
+    _builder.newLine();
+    _builder.append("\t \t");
+    _builder.append("this.type = type;");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("}");
     _builder.newLine();
     _builder.append("\t");
     _builder.newLine();
+    _builder.append("\t");
+    _builder.append("public void addContent(String content){");
+    _builder.newLine();
+    _builder.append("\t \t");
+    _builder.append("this.content.add(content);");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("public String getID(){");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("return ID;");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("public String getType(){");
+    _builder.newLine();
+    _builder.append("\t \t");
+    _builder.append("return type;");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("public ArrayList<String> getContent(){");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("return content;");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("public String toString(){");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("StringBuilder content = new StringBuilder();");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("for(c : this.content)");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("content.append(c + \" \");");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("return ID + \"{ \" ");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("+ type + \", \" ");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("+ content;");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("} \t\t");
+    _builder.newLine();
+    _builder.append("\t");
     _builder.newLine();
     _builder.append("}");
     _builder.newLine();
@@ -130,17 +184,64 @@ public class DomainmodelGenerator extends AbstractGenerator {
     return _builder;
   }
   
+  public CharSequence App(final Resource resource) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("public class App{");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("public static void main(String[] args){");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("DBGen db = new DBGen();");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("Statment stmt;\t\t\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("public static void readStatment(Statment stmt){");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("stmt.");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.newLine();
+    {
+      Iterable<Entity> _filter = Iterables.<Entity>filter(IteratorExtensions.<EObject>toIterable(resource.getAllContents()), Entity.class);
+      for(final Entity e : _filter) {
+        CharSequence _compile = this.compile(e);
+        _builder.append(_compile);
+        _builder.newLineIfNotEmpty();
+      }
+    }
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    return _builder;
+  }
+  
   public CharSequence compile(final Entity e) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.newLine();
-    _builder.append("Statment stmt = new Statment();");
+    _builder.append("stmt = readStmt(");
+    String _name = e.getName();
+    _builder.append(_name);
+    _builder.append(");");
+    _builder.newLineIfNotEmpty();
     _builder.newLine();
     {
       EList<Feature> _features = e.getFeatures();
       for(final Feature f : _features) {
-        _builder.append("    ");
         CharSequence _compile = this.compile(f);
-        _builder.append(_compile, "    ");
+        _builder.append(_compile);
         _builder.newLineIfNotEmpty();
       }
     }
@@ -151,29 +252,11 @@ public class DomainmodelGenerator extends AbstractGenerator {
   
   public CharSequence compile(final Feature f) {
     StringConcatenation _builder = new StringConcatenation();
+    _builder.append("        ");
     _builder.newLine();
+    _builder.append("                ");
     _builder.newLine();
-    _builder.append("public void set");
-    String _firstUpper = StringExtensions.toFirstUpper(f.getName());
-    _builder.append(_firstUpper);
-    _builder.append("(");
-    QualifiedName _fullyQualifiedName = this._iQualifiedNameProvider.getFullyQualifiedName(f.getType());
-    _builder.append(_fullyQualifiedName);
-    _builder.append(" ");
-    String _name = f.getName();
-    _builder.append(_name);
-    _builder.append(") {");
-    _builder.newLineIfNotEmpty();
-    _builder.append("    ");
-    _builder.append("this.");
-    String _name_1 = f.getName();
-    _builder.append(_name_1, "    ");
-    _builder.append(" = ");
-    String _name_2 = f.getName();
-    _builder.append(_name_2, "    ");
-    _builder.append(";");
-    _builder.newLineIfNotEmpty();
-    _builder.append("}");
+    _builder.append("        ");
     _builder.newLine();
     return _builder;
   }
