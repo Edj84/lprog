@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="org.example.domainmodel.ide/src-gen"/>
+	<classpathentry kind="src" path="org.example.domainmodel.ide/xtend-gen"/>
+	<classpathentry kind="src" path="org.example.domainmodel.tests/src-gen"/>
+	<classpathentry kind="src" path="org.example.domainmodel.tests/xtend-gen"/>
+	<classpathentry kind="src" path="org.example.domainmodel.ui.tests/src-gen"/>
+	<classpathentry kind="src" path="org.example.domainmodel.ui/src-gen"/>
+	<classpathentry kind="src" path="org.example.domainmodel.ui/xtend-gen"/>
+	<classpathentry kind="src" path="org.example.domainmodel/src-gen"/>
+	<classpathentry kind="src" path="org.example.domainmodel/xtend-gen"/>
+	<classpathentry kind="lib" path="org.example.domainmodel/.antlr-generator-3.2.0-patch.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
